@@ -743,6 +743,18 @@ Arguments:
 Used by:
   - `OpenOCDDriver`_
 
+JLinkDevice
+~~~~~~~~~~~
+A JLinkDevice resource describes a Segger J-Link Debug Probe.
+
+.. code-block:: yaml
+
+  JLinkDevice:
+    match:
+      ID_SERIAL_SHORT: '000000123456'
+
+- match (dict): key and value for a udev match, see `udev Matching`_
+
 SNMPEthernetPort
 ~~~~~~~~~~~~~~~~
 A SNMPEthernetPort resource describes a port on an Ethernet switch, which is
