@@ -21,6 +21,7 @@ from .udev import (
     LXAUSBMux,
     HIDRelay,
     USBDebugger,
+    JLinkDevice,
 )
 from ..util import dump
 
@@ -52,6 +53,7 @@ class Suggester:
         self.resources.append(LXAUSBMux(**args))
         self.resources.append(HIDRelay(**args))
         self.resources.append(USBDebugger(**args))
+        self.resources.append(JLinkDevice(**args))
 
     def suggest_callback(self, resource, meta, suggestions):
         cls = type(resource).__name__
