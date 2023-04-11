@@ -282,6 +282,14 @@ class NetworkUSBDebugger(RemoteUSBResource):
 
 @target_factory.reg_resource
 @attr.s(eq=False)
+class NetworkJLinkDevice(RemoteUSBResource):
+    """The NetworkJLinkDevice describes a remotely accessible USB Segger J-Link device"""
+    def __attrs_post_init__(self):
+        self.timeout = 10.0
+        super().__attrs_post_init__()
+
+@target_factory.reg_resource
+@attr.s(eq=False)
 class NetworkDeditecRelais8(RemoteUSBResource):
     """The NetworkDeditecRelais8 describes a remotely accessible USB relais port"""
     index = attr.ib(default=None, validator=attr.validators.instance_of(int))

@@ -499,6 +499,7 @@ exports["SigrokUSBSerialDevice"] = USBSigrokExport
 exports["USBSDMuxDevice"] = USBSDMuxExport
 exports["USBSDWireDevice"] = USBSDWireExport
 exports["USBDebugger"] = USBGenericExport
+exports["JLinkDevice"] = USBGenericExport
 
 exports["USBMassStorage"] = USBGenericExport
 exports["USBVideo"] = USBGenericExport
