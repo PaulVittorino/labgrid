@@ -489,6 +489,25 @@ class USBFlashableExport(USBGenericExport):
         p['devnode'] = self.local.devnode
         return p
 
+@attr.s(eq=False)
+class USBJLinkExport(USBGenericExport):
+    """ResourceExport for USB devices accessed directly from userspace"""
+
+    def __attrs_post_init__(self):
+        super().__attrs_post_init__()
+
+    def _get_params(self):
+        """Helper function to return parameters"""
+        return {
+            'host': self.host,
+            'busnum': self.local.busnum,
+            'devnum': self.local.devnum,
+            'path': self.local.path,
+            'vendor_id': self.local.vendor_id,
+            'model_id': self.local.model_id,
+            'serial': self.local.serial,
+        }
+
 exports["AndroidFastboot"] = USBGenericExport
 exports["IMXUSBLoader"] = USBGenericExport
 exports["MXSUSBLoader"] = USBGenericExport
@@ -499,7 +518,7 @@ exports["SigrokUSBSerialDevice"] = USBSigrokExport
 exports["USBSDMuxDevice"] = USBSDMuxExport
 exports["USBSDWireDevice"] = USBSDWireExport
 exports["USBDebugger"] = USBGenericExport
-exports["JLinkDevice"] = USBGenericExport
+exports["JLinkDevice"] = USBJLinkExport
 
 exports["USBMassStorage"] = USBGenericExport
 exports["USBVideo"] = USBGenericExport

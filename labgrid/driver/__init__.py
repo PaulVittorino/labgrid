@@ -38,3 +38,4 @@ from .networkinterfacedriver import NetworkInterfaceDriver
 from .provider import TFTPProviderDriver
 from .mqtt import TasmotaPowerDriver
 from .manualswitchdriver import ManualSwitchDriver
+from .jlinkdriver import JLinkDriver

@@ -675,3 +675,7 @@ class JLinkDevice(USBResource):
         self.match["ID_VENDOR_ID"] = "1366"
         self.match["ID_MODEL_ID"] = "0101"
         super().__attrs_post_init__()
+
+    def update(self):
+        super().update()
+        self.serial = self.device.properties.get('ID_SERIAL_SHORT')
