@@ -5,12 +5,15 @@
 import attr
 import socket
 import subprocess
+import time
 
 from .common import Driver
+from ..driver.exception import ExecutionError
 from ..factory import target_factory
 from ..step import step
 from ..util.helper import get_free_port
 from ..util.proxy import proxymanager
+from ..util import Timeout
 
 
 @target_factory.reg_driver
@@ -40,8 +43,20 @@ class JLinkDriver(Driver):
         self.remote_port = get_free_port()
         cmd = [self.tool, "-Port", f"{self.remote_port}", "-select", f"USB={self.jlink.serial}"]
         print(cmd)
-        self._server_process = subprocess.Popen(cmd)
+        self._server_process = subprocess.Popen(cmd, stdout=subprocess.PIPE, universal_newlines=True)
+
         self.host, self.port = proxymanager.get_host_and_port(self.jlink, default_port=self.remote_port)
+
+        #TODO wait for "Waiting for client connections... " to appear before returning. Otherwise the server is not ready to accept incoming connections.
+        time.sleep(1)
+        # try:
+        #     print("Trying to connect to J-Link Server")
+        #     s = socket.create_connection((self.host, self.port), timeout=10.0)
+        #     print("Connected")
+        #     s.close()
+        # except socket.timeout:
+        #     raise ExecutionError("Timeout while waiting for J-Link Remote Server to start")
+
         return super().on_activate()
 
     def on_deactivate(self):
