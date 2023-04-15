@@ -505,6 +505,7 @@ class USBJLinkExport(USBGenericExport):
             'path': self.local.path,
             'vendor_id': self.local.vendor_id,
             'model_id': self.local.model_id,
+            # The serial number is needed by the J-Link Remote Server
             'serial': self.local.serial,
         }
 
