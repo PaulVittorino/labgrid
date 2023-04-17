@@ -75,7 +75,3 @@ class JLinkDriver(Driver):
         if ip_addr == "127.0.1.1":
             ip_addr = "127.0.0.1"
         return f"{ip_addr}:{self.port}"
-
-    def get_serial(self):
-        """Return the serial of the connected J-Link device"""
-        return self.jlink.serial
