@@ -3,6 +3,7 @@
 # Copyright 2023 by Garmin Ltd. or its subsidiaries.
 
 import attr
+import logging
 import socket
 import subprocess
 import time
@@ -30,6 +31,7 @@ class JLinkDriver(Driver):
 
     def __attrs_post_init__(self):
         super().__attrs_post_init__()
+        self.logger = logging.getLogger(f"{self}:{self.target}")
         if self.target.env:
             self.tool = self.target.env.config.get_tool("JLinkRemoteServer") or "JLinkRemoteServer"
         else:
@@ -47,15 +49,13 @@ class JLinkDriver(Driver):
 
         self.host, self.port = proxymanager.get_host_and_port(self.jlink, default_port=self.remote_port)
 
-        #TODO wait for "Waiting for client connections... " to appear before returning. Otherwise the server is not ready to accept incoming connections.
-        time.sleep(1)
-        # try:
-        #     print("Trying to connect to J-Link Server")
-        #     s = socket.create_connection((self.host, self.port), timeout=10.0)
-        #     print("Connected")
-        #     s.close()
-        # except socket.timeout:
-        #     raise ExecutionError("Timeout while waiting for J-Link Remote Server to start")
+        # Wait for the server to be ready for incoming connections
+        # Waiting to open the socket with Python does not work
+        while (line := self._server_process.stdout.readline()) != "":
+            line = line.rstrip()
+            self.logger.debug(line)
+            if "Waiting for client connections..." in line:
+                break
 
         return super().on_activate()
 
